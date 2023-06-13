@@ -12,7 +12,6 @@ jobs:
     - name: Set up depot_tools
       run: |
         git clone https://chromium.googlesource.com/chromium/tools/depot_tools.git
-        # export PATH=$PWD/depot_tools:$PATH
         echo "$GITHUB_WORKSPACE/depot_tools" >> $GITHUB_PATH
 
     - name: Checking out source
@@ -29,12 +28,12 @@ jobs:
 
     - name: Display release
       run: ls -R
-      working-directory: devtools-frontend/out/Default
+      working-directory: devtools-frontend/out/Default/gen/front_end
 
     - name: Gzip
       run: |
         mkdir devtools-release
-        cp devtools-frontend/out/Default devtools-release
+        cp -r devtools-frontend/out/Default/gen/front_end devtools-release
         tar -czvf  devtools-release.tar.gz  devtools-release
 
     - name: Upload to release
