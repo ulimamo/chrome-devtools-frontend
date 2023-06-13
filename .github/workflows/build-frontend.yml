@@ -12,7 +12,8 @@ jobs:
     - name: Set up depot_tools
       run: |
         git clone https://chromium.googlesource.com/chromium/tools/depot_tools.git
-        export PATH=$PWD/depot_tools:$PATH
+        # export PATH=$PWD/depot_tools:$PATH
+        echo "${HOME}/depot_tools" >> $GITHUB_PATH
 
     - name: Checking out source
       run: |
@@ -21,10 +22,10 @@ jobs:
 
     - name: Build
       run: |
-        cd devtools-frontend
         gclient sync
         gn gen out/Default
         autoninja -C out/Default
+      working-directory: devtools-frontend
 
     - uses: actions/download-artifact@v3
       with:
