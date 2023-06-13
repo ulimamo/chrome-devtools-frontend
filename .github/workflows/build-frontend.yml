@@ -1,0 +1,37 @@
+name: build chrome-devtools-frontend
+
+on:
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up depot_tools
+      run: |
+        git clone https://chromium.googlesource.com/chromium/tools/depot_tools.git
+        export PATH=$PWD/depot_tools:$PATH
+
+    - name: Checking out source
+      run: |
+        git clone https://chromium.googlesource.com/devtools/devtools-frontend
+        gclient config https://chromium.googlesource.com/devtools/devtools-frontend --unmanaged
+
+    - name: Build
+      run: |
+        cd devtools-frontend
+        gclient sync
+        gn gen out/Default
+        autoninja -C out/Default
+
+    - uses: actions/download-artifact@v3
+      with:
+        name: devtools-frontend
+        path: devtools-frontend/out/Default
+
+    - name: Display artifact
+      run: ls -R
+      working-directory: devtools-frontend/out/Default
+
