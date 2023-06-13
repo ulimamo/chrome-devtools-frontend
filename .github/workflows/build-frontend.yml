@@ -13,7 +13,7 @@ jobs:
       run: |
         git clone https://chromium.googlesource.com/chromium/tools/depot_tools.git
         # export PATH=$PWD/depot_tools:$PATH
-        echo "${HOME}/depot_tools" >> $GITHUB_PATH
+        echo "$GITHUB_WORKSPACE/depot_tools" >> $GITHUB_PATH
 
     - name: Checking out source
       run: |
