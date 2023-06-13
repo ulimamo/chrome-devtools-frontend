@@ -26,5 +26,5 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.DEPLOY_TOKEN }}
         with:
-          tag_name: vitevui-v${{ steps.output-name.outputs.version }}
+          tag_name: version-${{ steps.output-name.outputs.version }}
           files: Release.txt
