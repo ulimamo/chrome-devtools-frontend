@@ -36,10 +36,20 @@ jobs:
         cp -r devtools-frontend/out/Default/gen/front_end devtools-release
         tar -czvf  devtools-release.tar.gz  devtools-release
 
+    - name: Set version
+      id: output-name
+      run: |
+        current=`date "+%Y-%m-%d %H:%M:%S"`
+        timeStamp=`date -d "$current" +%s`
+        currentTimeStamp=$(((timeStamp*1000+10#`date "+%N"`/1000000)/1000)) #将current转换为时间戳，精确到秒
+        echo "version=$currentTimeStamp" >> $GITHUB_OUTPUT
+
     - name: Release
       uses: softprops/action-gh-release@v1
-      if: startsWith(github.ref, 'refs/tags/')
+      env:
+        GITHUB_TOKEN: ${{ secrets.DEPLOY_TOKEN }}
       with:
+        tag_name: version-${{ steps.output-name.outputs.version }}
         files: devtools-release.tar.gz
 
     # - name: Upload to release
