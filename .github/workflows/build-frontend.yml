@@ -27,12 +27,22 @@ jobs:
         autoninja -C out/Default
       working-directory: devtools-frontend
 
-    - uses: actions/download-artifact@v3
-      with:
-        name: devtools-frontend
-        path: devtools-frontend/out/Default
-
-    - name: Display artifact
+    - name: Display release
       run: ls -R
       working-directory: devtools-frontend/out/Default
+
+    - name: Gzip
+      run: |
+        mkdir devtools-release
+        cp devtools-frontend/out/Default devtools-release
+        tar -czvf  devtools-release.tar.gz  devtools-release
+
+    - name: Upload to release
+      uses: JasonEtco/upload-to-release@master
+      with:
+        args:  devtools-release.tar.gz application/octet-stream
+      env:
+        GITHUB_TOKEN: ${{ secrets.DEPLOY_TOKEN }}
+
+
 
