@@ -22,7 +22,7 @@ jobs:
           current=`date "+%Y-%m-%d %H:%M:%S"`
           timeStamp=`date -d "$current" +%s`
           currentTimeStamp=$(((timeStamp*1000+10#`date "+%N"`/1000000)/1000)) #将current转换为时间戳，精确到秒
-          echo $currentTimeStamp >> $GITHUB_OUTPUT
+          echo "version=$currentTimeStamp" >> $GITHUB_OUTPUT
 
       - name: Release
         uses: softprops/action-gh-release@v1
