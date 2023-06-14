@@ -16,7 +16,7 @@ jobs:
 
     - name: Checking out source
       run: |
-        git clone https://chromium.googlesource.com/devtools/devtools-frontend
+        git clone --depth=1 https://chromium.googlesource.com/devtools/devtools-frontend
         gclient config https://chromium.googlesource.com/devtools/devtools-frontend --unmanaged
 
     - name: Build
@@ -33,8 +33,8 @@ jobs:
     - name: Gzip
       run: |
         mkdir devtools-release
-        cp -r devtools-frontend/out/Default/gen/front_end devtools-release
-        tar -czvf  devtools-release.tar.gz  devtools-release
+        # cp -r devtools-frontend/out/Default/gen/front_end devtools-release
+        tar -czvf  devtools-release.tar.gz -C devtools-frontend/out/Default/gen front_end
 
     - name: Set version
       id: output-name
