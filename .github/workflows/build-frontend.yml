@@ -39,10 +39,10 @@ jobs:
     - name: Set version
       id: output-name
       run: |
-        current=`date "+%Y-%m-%d %H:%M:%S"`
-        timeStamp=`date -d "$current" +%s`
-        currentTimeStamp=$(((timeStamp*1000+10#`date "+%N"`/1000000)/1000)) #将current转换为时间戳，精确到秒
-        echo "version=$currentTimeStamp" >> $GITHUB_OUTPUT
+        COMMIT_HASH=`git rev-parse --short HEAD` # 记录提交hash
+        echo "version=$COMMIT_HASH" >> $GITHUB_OUTPUT
+        git show --no-patch > ${{ github.workspace }}-CHANGELOG.txt
+      working-directory: devtools-frontend
 
     - name: Release
       uses: softprops/action-gh-release@v1
@@ -51,13 +51,9 @@ jobs:
       with:
         tag_name: version-${{ steps.output-name.outputs.version }}
         files: devtools-release.tar.gz
-
-    # - name: Upload to release
-    #   uses: JasonEtco/upload-to-release@master
-    #   with:
-    #     args:  devtools-release.tar.gz application/octet-stream
-    #   env:
-    #     GITHUB_TOKEN: ${{ secrets.DEPLOY_TOKEN }}
+        body_path: ${{ github.workspace }}-CHANGELOG.txt
+        generate_release_notes: true
+        append_body: true
 
 
 
