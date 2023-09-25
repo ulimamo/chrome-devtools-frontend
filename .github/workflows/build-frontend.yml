@@ -52,8 +52,5 @@ jobs:
         tag_name: version-${{ steps.output-name.outputs.version }}
         files: devtools-release.tar.gz
         body_path: ${{ github.workspace }}-CHANGELOG.txt
-        generate_release_notes: true
-        append_body: true
-
 
 
