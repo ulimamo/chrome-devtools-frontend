@@ -32,9 +32,10 @@ jobs:
 
     - name: Gzip
       run: |
-        mkdir devtools-release
+        # mkdir devtools-release
         # cp -r devtools-frontend/out/Default/gen/front_end devtools-release
         tar -czvf  devtools-release.tar.gz -C devtools-frontend/out/Default/gen front_end
+        tar --exclude="*.grd" --exclude="*.js.map" --exclude="*.d.ts" --exclude="*-tsconfig.json" -czvf devtools-release-slim.tar.gz -C devtools-frontend/out/Default/gen front_end
 
     - name: Set version
       id: output-name
@@ -50,7 +51,9 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.DEPLOY_TOKEN }}
       with:
         tag_name: version-${{ steps.output-name.outputs.version }}
-        files: devtools-release.tar.gz
+        files: |
+          devtools-release.tar.gz
+          devtools-release-slim.tar.gz
         body_path: ${{ github.workspace }}-CHANGELOG.txt
 
 
