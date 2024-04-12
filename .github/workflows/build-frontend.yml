@@ -35,7 +35,7 @@ jobs:
         # mkdir devtools-release
         # cp -r devtools-frontend/out/Default/gen/front_end devtools-release
         tar -czvf  devtools-release.tar.gz -C devtools-frontend/out/Default/gen front_end
-        tar --exclude="*.d" --exclude="*.grd" --exclude="*.js.map" --exclude="*.ts.map" --exclude="*.d.ts" --exclude="*-tsconfig.json" -czvf devtools-release-slim.tar.gz -C devtools-frontend/out/Default/gen front_end
+        tar --exclude="*.d" --exclude="*.grd" --exclude="*.gz" --exclude="*.test.js" --exclude="*.js.map" --exclude="*.ts.map" --exclude="*.d.ts" --exclude="*-tsconfig.json" -czvf devtools-release-slim.tar.gz -C devtools-frontend/out/Default/gen front_end
 
     - name: Set version
       id: output-name
